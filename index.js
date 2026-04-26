@@ -1,12 +1,13 @@
 //Imports
 const express = require("express");
 const dotenv = require("dotenv");
-const { prototype } = require("nodemailer/lib/dkim");
+//Internal Imports
+const { connectToDatabase } = require("./config/dbConfig");
 
-//CONFIG
+//Global CONFIG
 dotenv.config();
 
-
+//APP
  const app = express();
 
 
@@ -16,7 +17,11 @@ dotenv.config();
 app.get("/",(req,res)=>{
   res.send("Welcome To Our BackEnd")
 })
+//Connect Cloud
+connectToDatabase();
 
+//Run Server
 app.listen(PORT,function(){
+  
   console.log(`SERVER RUNNING @ PORT : ${PORT}`)
 });
