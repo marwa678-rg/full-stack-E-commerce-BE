@@ -17,7 +17,7 @@ dotenv.config();
 app.get("/",(req,res)=>{
   res.send("Welcome To Our BackEnd")
 })
-//Connect Cloud
+//Connect To Cloud
 connectToDatabase();
 
 //Run Server
