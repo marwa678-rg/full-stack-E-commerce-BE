@@ -6,7 +6,7 @@ const dotenv= require("dotenv")
 dotenv.config();
 
 //Auth Middleware Validate userLogin in
-function authMiddleware(reqest,response,next){
+function authMiddleware(request,response,next){
 try {
    //validate Headers
   const auth = request.headers["authorization"];
@@ -22,6 +22,9 @@ try {
   const payload=jwt.verify(token,process.env.JWT_SECRET);
 
   request.user=payload;
+
+  next();
+  
 } catch (error) {
   console.log(eror);
   response.status(401).json({message:"Unauthorized"})

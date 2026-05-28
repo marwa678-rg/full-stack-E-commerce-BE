@@ -1,6 +1,8 @@
 //Imports
 const express = require("express");
 const dotenv = require("dotenv");
+const {default:rateLimit} =require("express-rate-limit")
+const cors = require("cors")
 //Internal Imports
 const { connectToDatabase } = require("./config/dbConfig");
 const authRoutes = require("./routes/authRoutes")
@@ -9,6 +11,21 @@ dotenv.config();
 
 //APP
  const app = express();
+//Global Middleware
+app.use(express.json());
+
+app.use(cors({
+  origin:JSON.parse(process.env.PRODUCTION_ENV)?
+  process.env.CLIENT_ORIGIN :"*"
+}));
+
+
+//RateLimit
+const limiter = rateLimit({
+  windowMs:15*1000*60,
+  limit:100,
+})
+app.use(limiter);
 
 
  const PORT = process.env.PORT || 3000;

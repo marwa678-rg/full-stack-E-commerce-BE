@@ -16,7 +16,7 @@ const userSchema = new mongoose.Schema({
 //______________Verification_____________________
   otp:{type:String,maxLength:6},
   otpExpires:{type:Date},
-  isVerify:{type:Boolean,default:false},
+  isVerified:{type:Boolean,default:false},
   otpRequestCount:{type:Number,default:0},
 //_____Password__________
 resetPasswordToken:{type:String},
