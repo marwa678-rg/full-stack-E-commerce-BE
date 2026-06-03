@@ -6,6 +6,7 @@ const cors = require("cors")
 //Internal Imports
 const { connectToDatabase } = require("./config/dbConfig");
 const authRoutes = require("./routes/authRoutes")
+const productRoutes = require("./routes/productsRoutes")
 //Global CONFIG
 dotenv.config();
 
@@ -22,7 +23,7 @@ app.use(cors({
 
 //RateLimit
 const limiter = rateLimit({
-  windowMs:15*1000*60,
+  windowMs:15*60*1000,
   limit:100,
 })
 app.use(limiter);
@@ -37,6 +38,7 @@ app.get("/",(req,res)=>{
 
 //API Routes
 app.use("/api/v1/auth",authRoutes)
+app.use("/api/v1/products",productRoutes);
 
 //Connect To Cloud
 connectToDatabase();

@@ -1,8 +1,10 @@
-const { registerSchema, forgotPasswordSchema } = require("../validation/user.validation")
+const { registerSchema, forgotPasswordSchema, verifySchema, resendOtpSchema, loginSchema, resetPasswordSchema } = require("../validation/user.validation")
 const{User}=require("../models/User")
 const{generateOtp}=require("../utils/otpGenerator")
 const {sendMail}= require("../utils/sendMail")
 const bcrypt= require("bcrypt")
+const jwt = require("jsonwebtoken")
+const crypto = require("crypto");
 
 
 //TODo:Register
@@ -55,7 +57,7 @@ async function verifyOtp(request,response){
   try {
     //validate
     const {error,value}= verifySchema.validate(request.body,{abortEarly:false,});
-    if(erorr){
+    if(error){
       return response.status(400).json({messages:error.details.map((e)=>e.message)});
 
     }
@@ -121,13 +123,14 @@ async function resendOtp(request,response){
     response.status(500).json({message:"Internal server error"})
   }
 }
+
 //TODO:login
 async function login(request,response){
   try {
     //validate
     const {error,value}=loginSchema.validate(request.body,{abortEarly:false,});
     if(error){
-      return response.status(400).json({messages:errordetails.map((e)=>e.message)})
+      return response.status(400).json({messages:error.details.map((e)=>e.message)})
     }
     //Extract Data 
     const {email,password}=value;
@@ -168,7 +171,7 @@ response.json({message:"loggedin Sucessfully",token,user:{
 async function myInfo(request,response){
   try {
     //extract from request
-    const userId = request.user.id;
+    const userId = request.user.userId;
     //avoid return pass & otp
     const user = await User.findById(userId).select("-password -otp -otpExpires -otpRequestCount");
     //check user
@@ -230,11 +233,14 @@ try {
   }
   //extract Data
   const {token,newPassword}= value;
+  console.log("NOW:", new Date());
   //validate token
   const user = await User.findOne({
     resetPasswordToken:token,
     resetPasswordExpires:{$gt:Date.now()}
   });
+  console.log("TOKEN FROM BODY:", token);
+  console.log("USER:", user);
   if(!user){
     return response.status(400).json({message:"Invalid Token or Expired"})
   }

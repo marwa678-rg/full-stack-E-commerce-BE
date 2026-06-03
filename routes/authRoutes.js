@@ -17,6 +17,8 @@ router.post("/verify-otp",verifyOtp)
 
 //Resend Otp
 router.post("/resendOtp",resendOtp)
+//Login
+router.post("/login",login)
 
 //get My info
 router.get("/myInfo",authMiddleware,myInfo)

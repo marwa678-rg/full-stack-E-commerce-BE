@@ -26,7 +26,7 @@ try {
   next();
   
 } catch (error) {
-  console.log(eror);
+  console.log(error);
   response.status(401).json({message:"Unauthorized"})
 }
  
