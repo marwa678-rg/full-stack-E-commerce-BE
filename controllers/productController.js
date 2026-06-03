@@ -1,51 +1,153 @@
-
 //Imports
-const { createProductSchema } = require("../validation/product.validation");
-const {Product}= require("../models/Products");
+const {
+  createProductSchema,
+  updateProductSchema,
+} = require("../validation/product.validation");
+const { Product } = require("../models/Products");
 
+//__________________create Product_____________
+async function createProduct(request, response) {
+  try {
+    //userData
+    const userId = request.user.userId;
+    //validation
+    const { value, error } = createProductSchema.validate(request.body, {
+      abortEarly: false,
+    });
+    if (error) {
+      return response
+        .status(400)
+        .json({ messages: error.details.map((e) => e.message) });
+    }
 
-
-
-
-
-//create Product
-async function createProduct(request,response){
-try{
-  //userData
-  const userId = request.user.userId;
-  //validation
-  const {value,error}= createProductSchema.validate(request.body,{abortEarly:false,});
-  if(error){
-    return response.status(400).json({messages:error.details.map((e)=>e.message)});
+    //create Product
+    const product = await Product.create({ ...value, createdBy: userId });
+    response
+      .status(201)
+      .json({ message: "Product Created Successfully", product });
+  } catch (error) {
+    console.log(error);
+    return response.status(500).json({ message: "Internal Server Error" });
   }
- 
-  //create Product
-  const product = await Product.create({...value,createdBy:userId})
-response.status(201).json({message:"Product Created Successfully",product})
-}
-catch(error){
-console.log(error);
-return response.status(500).json({message:"Internal Server Error"})
-}
 }
 
-//get all Products
-async function getAllProducts(request,response){}
+//_______________get all Products___________________
+async function getAllProducts(request, response) {
+  try {
+    //Pagination and Search
+    let {
+      page = 1,
+      pageSize = 10,
+      search = "",
+      category,
+      brand,
+    } = request.query;
+    const limit = pageSize;
+    const skip = (page - 1) * pageSize;
+    //search condition
+    const query = {};
 
+    if (search) {
+      query.$or = [
+        { name: { $regex: search, $options: "i" } },
+        { description: { $regex: search, $options: "i" } },
+      ];
+    }
+    if (category) {
+      query.category = {
+        $regex: category,
+        $options: "i",
+      };
+    }
+    if (brand) {
+      query.brand = { $regex: brand, $options: "i" };
+    }
 
-//get single Product
-async function getProduct(request,response){}
+    //GET Products
+    const products = await Product.find(query)
+      .sort({ createdAt: -1 })
+      .skip(skip)
+      .limit(limit);
+    //Total of products
+    const total = await Product.countDocuments(query);
+
+    response.status(200).json({
+      page,
+      pageSize: limit,
+      totalPages: Math.ceil(total / limit),
+      total,
+      products,
+    });
+  } catch (error) {
+    console.log(error);
+    return response.status(500).json({ message: "Internal Server Error" });
+  }
+}
+
+//______________get single Product________________________
+async function getProduct(request, response) {
+  try {
+    const { id } = request.params;
+    const product = await Product.findById(id);
+    if (!product) {
+      return response.status(404).json({ message: "Product Not Found" });
+    }
+    response.status(200).json({ product });
+  } catch (error) {
+    console.log(error);
+    return response.status(500).json({ message: "Internal Server Error" });
+  }
+}
 
 //update Product
-async function updateProduct(request,response){}
+async function updateProduct(request, response) {
+  try {
+    const { id } = request.params;
+    const { value, error } = updateProductSchema.validate(request.body, {
+      abortEarly: false,
+    });
+    if (error) {
+      return response
+        .status(400)
+        .json({ messages: error.details.map((e) => e.message) });
+    }
+    const newProduct = await Product.findByIdAndUpdate(id, value, {
+      new: true,
+      runValidators: true,
+    }); //return data after update & handle error data
+    if (!newProduct) {
+      return response.status(404).json({ message: "Product Not Found" });
+    }
+
+    return response
+      .status(200)
+      .json({ message: "Product Updated Successfully", product: newProduct });
+  } catch (error) {
+    console.log(error);
+    return response.status(500).json({ message: "Internal Server Error" });
+  }
+}
 
 //delete Prouct
-async function deleteProduct(request,response){}
+async function deleteProduct(request, response) {
+  try{
+    const {id}=request.params;
+    const deletedProduct = await Product.findByIdAndDelete(id);
+    if(!deletedProduct){
+      return response.staus(404).json({message:"Product Not Found"});
+    }
 
-module.exports={
+    return response.status(200).json({message:"Product Deleted Successsfully"})
+  }catch(error){
+    console.log(error);
+    return response.status(500).json({ message: "Internal Server Error" });
+  }
+}
+
+module.exports = {
   createProduct,
   getAllProducts,
   getProduct,
   updateProduct,
   deleteProduct,
-}
+};
