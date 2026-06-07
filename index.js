@@ -3,6 +3,7 @@ const express = require("express");
 const dotenv = require("dotenv");
 const {default:rateLimit} =require("express-rate-limit")
 const cors = require("cors")
+const path = require("path")
 //Internal Imports
 const { connectToDatabase } = require("./config/dbConfig");
 const authRoutes = require("./routes/authRoutes")
@@ -15,6 +16,11 @@ dotenv.config();
 //Global Middleware
 app.use(express.json());
 
+
+//Multer Middleware
+app.use("/uploads",express.static(path.join(__dirname,"public","uploads")));
+
+//CORS
 app.use(cors({
   origin:JSON.parse(process.env.PRODUCTION_ENV)?
   process.env.CLIENT_ORIGIN :"*"

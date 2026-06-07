@@ -14,14 +14,27 @@ async function createProduct(request, response) {
     const { value, error } = createProductSchema.validate(request.body, {
       abortEarly: false,
     });
+
     if (error) {
       return response
         .status(400)
         .json({ messages: error.details.map((e) => e.message) });
     }
 
+    // Handle file uploads
+    const imageCover = request.files?.imageCover?.[0]?.filename;
+    const images = request.files?.images?.map((file) => file.filename) || [];
+    if (!imageCover) {
+      return response.status(400).json({ message: "Image Cover is required" });
+    }
+
     //create Product
-    const product = await Product.create({ ...value, createdBy: userId });
+    const product = await Product.create({
+      ...value,
+      imageCover,
+      images,
+      createdBy: userId,
+    });
     response
       .status(201)
       .json({ message: "Product Created Successfully", product });
@@ -130,15 +143,17 @@ async function updateProduct(request, response) {
 
 //delete Prouct
 async function deleteProduct(request, response) {
-  try{
-    const {id}=request.params;
+  try {
+    const { id } = request.params;
     const deletedProduct = await Product.findByIdAndDelete(id);
-    if(!deletedProduct){
-      return response.staus(404).json({message:"Product Not Found"});
+    if (!deletedProduct) {
+      return response.status(404).json({ message: "Product Not Found" });
     }
 
-    return response.status(200).json({message:"Product Deleted Successsfully"})
-  }catch(error){
+    return response
+      .status(200)
+      .json({ message: "Product Deleted Successsfully" });
+  } catch (error) {
     console.log(error);
     return response.status(500).json({ message: "Internal Server Error" });
   }

@@ -19,7 +19,7 @@ const productSchema = new mongoose.Schema({
 
   imageCover:{type:String,required:true},
 
-  images:[String],
+  images:{type:[String],default:[]},
 
   ratingsAverage:{type:Number,default:0,min:0,max:5},
 
