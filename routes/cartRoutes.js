@@ -17,10 +17,10 @@ router.post("/add", authMiddleware, addToCart);
 router.get("/my-cart", authMiddleware, getMyCart);
 
 //Update Cart Item Quantity
-router.put("/update/:productId", authMiddleware, updateItemQuantity);
+router.put("/update/:itemId", authMiddleware, updateItemQuantity);
 
 //Remove Item From Cart
-router.delete("/remove/:productId", authMiddleware, removeFromCart);
+router.delete("/remove/:itemId", authMiddleware, removeFromCart);
 
 //clear cart
 router.delete("/clear", authMiddleware, clearCart);
