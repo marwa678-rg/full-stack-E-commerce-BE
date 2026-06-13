@@ -54,7 +54,7 @@ async function addToCart(request, response) {
     if (!cart) {
       const totalPrice = finalPrice * quantity;
 
-      cart = await Cart.create({
+      let cart = await Cart.create({
         user: userId,
         items: [
           {

@@ -9,6 +9,7 @@ const { connectToDatabase } = require("./config/dbConfig");
 const authRoutes = require("./routes/authRoutes")
 const productRoutes = require("./routes/productsRoutes")
 const cartRoutes = require("./routes/cartRoutes")
+const orderRoutes = require("./routes/orderRoutes")
 //Global CONFIG
 dotenv.config();
 
@@ -47,7 +48,7 @@ app.get("/",(req,res)=>{
 app.use("/api/v1/auth",authRoutes)
 app.use("/api/v1/products",productRoutes);
 app.use("/api/v1/cart",cartRoutes);
-
+app.use("/api/v1/order",orderRoutes);
 //Connect To Cloud
 connectToDatabase();
 
