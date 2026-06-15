@@ -13,7 +13,7 @@ const {
   createOrder,
   getMyOrders,
   getMyOrderById,
- 
+  cancelOrder,
 } = require("../controllers/orderControllers");
 
 const router = express.Router();
@@ -27,6 +27,8 @@ router.get("/my-orders", authMiddleware, getMyOrders);
 // get order by Id
 router.get("/my-orders/:orderId", authMiddleware, getMyOrderById);
 
+//CancelOrder
+router.put("/cancel-order/:orderId", authMiddleware, cancelOrder);
 //__________________________Admin Routes__________________
 
 //get Orders
@@ -47,7 +49,7 @@ router.get(
 
 //update status
 router.put(
-  "/:orderId/status",
+  "/:orderId",
   authMiddleware,
   roleMiddleware("admin", "super_admin"),
   updateOrderStatus,
