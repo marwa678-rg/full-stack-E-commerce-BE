@@ -13,7 +13,16 @@ const createProductSchema = Joi.object({
 
   stock: Joi.number().min(0).required(),
 
-  category: Joi.string().required(),
+  category: Joi.string()
+    .valid(
+      "Electronics",
+      "Fashion",
+      "Home & Kitchen",
+      "Beauty",
+      "Sports",
+      "Books",
+    )
+    .required(),
 
   brand: Joi.string().min(2).max(50).required(),
 });
@@ -33,8 +42,6 @@ const updateProductSchema = Joi.object({
   category: Joi.string(),
 
   stock: Joi.number().min(0),
-
-  
 }).min(1); //at least one field should be provided for update
 
 module.exports = {

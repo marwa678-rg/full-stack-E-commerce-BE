@@ -208,9 +208,10 @@ async function forgotPassword(request,response){
     await user.save();
     //origin front  + reset password url
     const resetUrl = `${process.env.CLIENT_ORIGIN}/resetPassword/${resetPasswordToken}`;
+    console.log(resetUrl);
     //send mail
     await sendMail(email, "reset password ", `<p>Click the button below to reset your password :</p>
-      <a href="${resetPassword}"  style="display:inline-block;
+      <a href="${resetUrl}"  style="display:inline-block;
       padding:10px 16px;
       background:#7c3aed;
       color:#fff;

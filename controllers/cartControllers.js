@@ -65,6 +65,11 @@ async function addToCart(request, response) {
         ],
         totalPrice,
       });
+      //Populate Product data
+      await cart.populate(
+        "items.product",
+        "name brand price discountPrice imageCover stock",
+      );
 
       return response.status(201).json({
         message: "Product Added To Cart",
@@ -104,6 +109,11 @@ async function addToCart(request, response) {
     // Save Cart
     await cart.save();
 
+    // Populate product data
+    await cart.populate(
+      "items.product",
+      "name brand price discountPrice imageCover stock",
+    );
     return response.status(200).json({
       message: "Cart Updated Successfully",
       cart,
@@ -124,7 +134,7 @@ async function getMyCart(request, response) {
     const userId = request.user.userId;
     const cart = await Cart.findOne({ user: userId }).populate(
       "items.product",
-      "name price discountPrice imageCover stock",
+      "name price discountPrice imageCover stock brand",
     );
     if (!cart) {
       return response.status(404).json({ message: "No Cart Found" });
@@ -190,6 +200,12 @@ async function updateItemQuantity(request, response) {
 
     //Save
     await cart.save();
+    //populate
+    await cart.populate(
+      "items.product",
+      "name brand price discountPrice imageCover stock",
+    );
+
     return response
       .status(200)
       .json({ message: "Item  Quantity Updated Sucessfully", cart });
@@ -226,6 +242,12 @@ async function removeFromCart(request, response) {
     );
     //Save
     await cart.save();
+    //populate data
+    await cart.populate(
+      "items.product",
+      "name brand price discountPrice imageCover stock",
+    );
+
     return response
       .status(200)
       .json({ message: "Item Removed Successfully", cart });
@@ -251,6 +273,11 @@ async function clearCart(request, response) {
 
     //save
     await cart.save();
+
+    await cart.populate(
+      "items.product",
+      "name brand price discountPrice imageCover stock",
+    );
 
     return response
       .status(200)
