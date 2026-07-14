@@ -13,6 +13,8 @@ const products = [
     stock: 10,
     imageCover: "macbook.jpg",
     images: [],
+     ratingsAverage:5,
+    ratingsQuantity:280,
     createdBy: adminId,
   },
   {
@@ -25,6 +27,8 @@ const products = [
     stock: 15,
     imageCover: "iphone15.jpg",
     images: [],
+     ratingsAverage:4.5,
+    ratingsQuantity:280,
     createdBy: adminId,
   },
   {
@@ -37,6 +41,8 @@ const products = [
     stock: 20,
     imageCover: "galaxy-s25.jpg",
     images: [],
+     ratingsAverage:4.5,
+    ratingsQuantity:280,
     createdBy: adminId,
   },
   {
@@ -49,6 +55,8 @@ const products = [
     stock: 12,
     imageCover: "sony-headphones.jpg",
     images: [],
+     ratingsAverage:2.5,
+    ratingsQuantity:50,
     createdBy: adminId,
   },
   {
@@ -61,6 +69,8 @@ const products = [
     stock: 30,
     imageCover: "keyboard.jpg",
     images: [],
+     ratingsAverage:1.5,
+    ratingsQuantity:12,
     createdBy: adminId,
   },
   {
@@ -73,6 +83,8 @@ const products = [
     stock: 25,
     imageCover: "nike-shoes.jpg",
     images: [],
+     ratingsAverage:4.5,
+    ratingsQuantity:280,
     createdBy: adminId,
   },
   {
@@ -85,6 +97,8 @@ const products = [
     stock: 18,
     imageCover: "adidas-shoes.jpg",
     images: [],
+     ratingsAverage:4.5,
+    ratingsQuantity:280,
     createdBy: adminId,
   },
   {
@@ -97,6 +111,8 @@ const products = [
     stock: 40,
     imageCover: "hoodi.jpg",
     images: [],
+     ratingsAverage:4.0,
+    ratingsQuantity:60,
     createdBy: adminId,
   },
   {
@@ -109,6 +125,8 @@ const products = [
     stock: 35,
     imageCover: "jeans.jpg",
     images: [],
+     ratingsAverage:4.0,
+    ratingsQuantity:280,
     createdBy: adminId,
   },
   {
@@ -121,6 +139,8 @@ const products = [
     stock: 10,
     imageCover: "coffee-table.jpg",
     images: [],
+     ratingsAverage:3.5,
+    ratingsQuantity:80,
     createdBy: adminId,
   },
   {
@@ -133,6 +153,8 @@ const products = [
     stock: 20,
     imageCover: "chair.jpg",
     images: [],
+     ratingsAverage:4.5,
+    ratingsQuantity:200,
     createdBy: adminId,
   },
   {
@@ -145,6 +167,8 @@ const products = [
     stock: 15,
     imageCover: "cookware.jpg",
     images: [],
+     ratingsAverage:4.0,
+    ratingsQuantity:60,
     createdBy: adminId,
   },
   {
@@ -157,6 +181,8 @@ const products = [
     stock: 50,
     imageCover: "facewash.jpg",
     images: [],
+     ratingsAverage:4.5,
+    ratingsQuantity:280,
     createdBy: adminId,
   },
   {
@@ -169,6 +195,8 @@ const products = [
     stock: 40,
     imageCover: "mascara.jpg",
     images: [],
+     ratingsAverage:4.0,
+    ratingsQuantity:100,
     createdBy: adminId,
   },
   {
@@ -181,6 +209,8 @@ const products = [
     stock: 60,
     imageCover: "lotion.jpg",
     images: [],
+     ratingsAverage:4.5,
+    ratingsQuantity:180,
     createdBy: adminId,
   },
   {
@@ -193,6 +223,8 @@ const products = [
     stock: 25,
     imageCover: "football.jpg",
     images: [],
+     ratingsAverage:3.5,
+    ratingsQuantity:80,
     createdBy: adminId,
   },
   {
@@ -205,6 +237,8 @@ const products = [
     stock: 30,
     imageCover: "yoga-mat.jpg",
     images: [],
+     ratingsAverage:4.5,
+    ratingsQuantity:175,
     createdBy: adminId,
   },
   {
@@ -217,6 +251,8 @@ const products = [
     stock: 12,
     imageCover: "dumbbels.jpg",
     images: [],
+     ratingsAverage:4.0,
+    ratingsQuantity:320,
     createdBy: adminId,
   },
   {
@@ -229,6 +265,8 @@ const products = [
     stock: 20,
     imageCover: "clean-code.jpg",
     images: [],
+     ratingsAverage:3.5,
+    ratingsQuantity:200,
     createdBy: adminId,
   },
   {
@@ -241,6 +279,8 @@ const products = [
     stock: 15,
     imageCover: "java-book.jpg",
     images: [],
+    ratingsAverage:4.5,
+    ratingsQuantity:280,
     createdBy: adminId,
   },
 ];

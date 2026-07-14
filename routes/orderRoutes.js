@@ -21,14 +21,17 @@ const router = express.Router();
 //Create Order
 router.post("/create", authMiddleware, createOrder);
 
-//Get My Orders
+//Get My-orders
 router.get("/my-orders", authMiddleware, getMyOrders);
-
 // get order by Id
 router.get("/my-orders/:orderId", authMiddleware, getMyOrderById);
 
 //CancelOrder
 router.put("/cancel-order/:orderId", authMiddleware, cancelOrder);
+
+
+
+
 //__________________________Admin Routes__________________
 
 //get Orders

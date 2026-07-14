@@ -54,7 +54,7 @@ async function createOrder(request, response) {
       }
     }
 
-    //create orser && save
+    //create order && save
     const order = await Order.create({
       user: userId,
       items: cart.items,
@@ -92,15 +92,40 @@ async function getMyOrders(request, response) {
     //Get UserId
     const userId = request.user.userId;
 
-    const orders = await Order.find({ user: userId }).populate("items.product");
-
-    if (orders.length === 0) {
-      return response.status(404).json({ message: "No Orders Found" });
+    //______________Pagination & Sorting_________//
+    let { page = 1, pageSize = 10, search = "" } = request.query;
+    const limit = pageSize;
+    const skip = (page - 1) * pageSize;
+    //____________Search___________//
+    const query = { user: userId };
+    if (search) {
+      query.$or = [
+        { orderStatus: { $regex: search, $options: "i" } },
+        { paymentMethod: { $regex: search, $options: "i" } },
+      ];
     }
 
-    return response
-      .status(200)
-      .json({ message: "Orders Sent Successfully", orders });
+    const orders = await Order.find(query)
+      .sort({ createdAt: -1 })
+      .skip(skip)
+      .limit(limit)
+      .populate(
+        "items.product",
+        "name price imageCover discription discountPrice",
+      )
+      .populate("user", "name email");
+
+    //Total of Orders
+    const totalOrders = await Order.countDocuments(query);
+
+    return response.status(200).json({
+      message: "Orders Sent Successfully",
+      page,
+      pageSize: limit,
+      totalPages: Math.ceil(totalOrders / limit),
+      totalOrders,
+      orders,
+    });
   } catch (error) {
     console.log(error);
     return response.status(500).json({ message: "Internal Server Error" });
@@ -171,7 +196,13 @@ async function cancelOrder(request, response) {
 
     await order.save();
 
-    return response.status(200).json({ message: "Your Order Cancelled" });
+    await order.populate("items.product", "name imageCover price");
+
+    await order.populate("user", "name email");
+
+    return response
+      .status(200)
+      .json({ message: "Your Order Cancelled", order });
   } catch (error) {
     console.log(error);
     return response.status(500).json({ message: "Internal Server Error" });
