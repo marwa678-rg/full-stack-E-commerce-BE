@@ -125,16 +125,17 @@ async function updateProduct(request, response) {
         .json({ messages: error.details.map((e) => e.message) });
     }
     const updatedProduct = await Product.findByIdAndUpdate(id, value, {
-      new: true,
+      returnDocument: "after",// = new:true
       runValidators: true,
     }); //return data after update & handle error data
     if (!updatedProduct) {
       return response.status(404).json({ message: "Product Not Found" });
     }
 
-    return response
-      .status(200)
-      .json({ message: "Product Updated Successfully", product: updatedProduct });
+    return response.status(200).json({
+      message: "Product Updated Successfully",
+      product: updatedProduct,
+    });
   } catch (error) {
     console.log(error);
     return response.status(500).json({ message: "Internal Server Error" });
